@@ -63,7 +63,7 @@ namespace Lab_1
             ArticlesList = articles;
         }
 
-        public void AddArticles(Article[] articles) {
+        public void AddArticles(params Article[] articles) {
             var len = articles.Length + ArticlesList.Length;
             var newArticles = new Article[len];
 

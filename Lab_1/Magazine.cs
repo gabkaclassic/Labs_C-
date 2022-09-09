@@ -76,19 +76,9 @@ namespace Lab_1
 
             ArticlesList = newArticles;
         }
-
-        private static string FrequencyName(Frequency frequency) {
-
-            if (frequency.Equals(Frequency.Monthly))
-                return "Monthly";
-            else if (frequency.Equals(Frequency.Yearly))
-                return "Yearly";
-            else
-                return "Wheekly";
-        }
         public override string ToString()
         {
-            var result = new StringBuilder($"Title: {Title}, Frequency: {FrequencyName(Frequency)}, date of publication: {Date.Day}.{Date.Month}.{Date.Year}, circulation: {Circulation}, articles: \n");
+            var result = new StringBuilder($"Title: {Title}, Frequency: {Frequency}, date of publication: {Date.Day}.{Date.Month}.{Date.Year}, circulation: {Circulation}, articles: \n");
             foreach (var article in ArticlesList)
                 result.Append(article).Append('\n');
             return result.ToString();
@@ -96,7 +86,7 @@ namespace Lab_1
 
         public virtual string ToShortString()
         {
-            return $"Title: {Title}, Frequency: {FrequencyName(Frequency)}, date of publication: {Date.Day}.{Date.Month}.{Date.Year}, circulation: {Circulation}, average rating of articles: {AverageRate}";
+            return $"Title: {Title}, Frequency: {Frequency}, date of publication: {Date.Day}.{Date.Month}.{Date.Year}, circulation: {Circulation}, average rating of articles: {AverageRate}";
         }
     }
 }

@@ -1,65 +1,69 @@
-﻿namespace Lab_1;
+﻿using System;
 
-public class Person
+namespace Lab_1
 {
-    private string firstname;
-    public string Firstname
+
+    public class Person
     {
-        set
+        private string firstname;
+        public string Firstname
         {
-            if (string.IsNullOrEmpty(value))
-                firstname = value;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    firstname = value;
+            }
+            get => firstname;
         }
-        get => firstname;
-    }
 
-    private string lastname;
-    public string Lastname
-    {
-        set
+        private string lastname;
+        public string Lastname
         {
-            if (string.IsNullOrEmpty(value))
-                lastname = value;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    lastname = value;
+            }
+            get => lastname;
         }
-        get => lastname;
-    }
 
-    private DateTime birthday;
+        private DateTime birthday;
 
-    public DateTime Birthday
-    {
-        get => birthday;
-        set => birthday = value; 
-    }
+        public DateTime Birthday
+        {
+            get => birthday;
+            set => birthday = value;
+        }
 
-    public int BirthYear
-    {
-        get => Birthday.Year;
-        set => Birthday.AddYears(value - Birthday.Year);
-    }
+        public int BirthYear
+        {
+            get => Birthday.Year;
+            set => Birthday.AddYears(value - Birthday.Year);
+        }
 
-    public Person()
-    {
-        lastname = "<Unknown>";
-        firstname = "<Unknown>";
-        Birthday = DateTime.Today;
-    }
+        public Person()
+        {
+            lastname = "<Unknown>";
+            firstname = "<Unknown>";
+            Birthday = DateTime.Today;
+        }
 
-    public Person(string firstname, string lastname, DateTime birthday)
-    {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        Birthday = birthday;
-    }
+        public Person(string firstname, string lastname, DateTime birthday)
+        {
+            this.firstname = firstname;
+            this.lastname = lastname;
+            Birthday = birthday;
+        }
 
-    public override string ToString()
-    {
-        return $"Person: [Firstname: {Firstname}, Lastname: {Lastname}, Date of birth: {Birthday.Day}.{Birthday.Month}.{Birthday.Year}]";
-    }
+        public override string ToString()
+        {
+            return $"Person: [Firstname: {Firstname}, Lastname: {Lastname}, Date of birth: {Birthday.Day}.{Birthday.Month}.{Birthday.Year}]";
+        }
 
-    public virtual string ToShortString()
-    {
-        return $"Person: [Firstname: {Firstname}, Lastname: {Lastname}]";
+        public virtual string ToShortString()
+        {
+            return $"Person: [Firstname: {Firstname}, Lastname: {Lastname}]";
+        }
+
     }
-    
-}   
+}

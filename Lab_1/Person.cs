@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Lab_1
 {
@@ -65,5 +66,38 @@ namespace Lab_1
             return $"Person: [Firstname: {Firstname}, Lastname: {Lastname}]";
         }
 
+        public override bool Equals(object? obj)
+        {
+            if (obj is not Person other)
+                return false;
+
+            return lastname.Equals(other.lastname)
+                   && firstname.Equals(other.firstname)
+                   && Birthday.Equals(other.Birthday);
+        }
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(firstname, lastname, birthday);
+        }
+        public virtual object DeepCopy()
+        {
+
+            return new Person
+            {
+                birthday = DateTime.Parse(birthday.ToString(CultureInfo.InvariantCulture)),
+                firstname = string.Copy(firstname),
+                lastname = string.Copy(lastname)
+            };
+        }
+
+        public static bool operator==(Person person1, Person person2)
+        {
+            return person1.Equals(person2);
+        }
+
+        public static bool operator !=(Person person1, Person person2)
+        {
+            return !(person1 == person2);
+        }
     }
 }

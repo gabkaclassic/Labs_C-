@@ -1,7 +1,7 @@
 ﻿
 namespace Lab_1
 {
-    class Article : IRateAndCopy
+    internal sealed class Article : IRateAndCopy
     {
         public Person Author { get; set; }
         public string Title { get; set; }
@@ -40,7 +40,7 @@ namespace Lab_1
             return HashCode.Combine(Title, Rating, Author);
         }
 
-        public virtual object DeepCopy()
+        public object DeepCopy()
         {
             return new Article
             {

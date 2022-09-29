@@ -4,7 +4,7 @@ using System.Globalization;
 namespace Lab_1
 {
 
-    public class Person
+    public sealed class Person
     {
         private string firstname;
         public string Firstname
@@ -61,7 +61,7 @@ namespace Lab_1
             return $"Person: [Firstname: {Firstname}, Lastname: {Lastname}, Date of birth: {Birthday.Day}.{Birthday.Month}.{Birthday.Year}]";
         }
 
-        public virtual string ToShortString()
+        public string ToShortString()
         {
             return $"Person: [Firstname: {Firstname}, Lastname: {Lastname}]";
         }
@@ -79,7 +79,7 @@ namespace Lab_1
         {
             return HashCode.Combine(firstname, lastname, birthday);
         }
-        public virtual object DeepCopy()
+        public object DeepCopy()
         {
 
             return new Person

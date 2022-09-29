@@ -9,7 +9,7 @@ public class MagazineEnumerator : IEnumerator
     private int _index;
     private readonly IEnumerable<Person> _authors;
 
-    public MagazineEnumerator(ArrayList list, IEnumerable<Person> authors)
+    public MagazineEnumerator(ICollection list, IEnumerable<Person> authors)
     {
         _list = new ArrayList();
         _list.AddRange(list);
@@ -37,7 +37,7 @@ public class MagazineEnumerator : IEnumerator
                     break;
                 }
 
-            return _list[_index++];
+            return _list[_index++]!;
         }
     }
 

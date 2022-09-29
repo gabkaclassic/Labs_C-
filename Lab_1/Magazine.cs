@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Lab_1
 {
-    class Magazine : Edition, IRateAndCopy, IEnumerable
+    internal sealed class Magazine : Edition, IRateAndCopy, IEnumerable
     {
 
         private Frequency frequency;
@@ -100,7 +100,7 @@ namespace Lab_1
 
             return result.ToString();
         }
-        public virtual string ToShortString()
+        public string ToShortString()
         {
             return $"Title: {Title}, Frequency: {Frequency}, date of publication: {Date.Day}.{Date.Month}.{Date.Year}, circulation: {Circulation}, average rating of articles: {AverageRate}";
         }

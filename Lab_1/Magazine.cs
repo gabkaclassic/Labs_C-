@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Lab_1
 {
-    internal sealed class Magazine : Edition, IRateAndCopy, IEnumerable
+    internal class Magazine : Edition, IRateAndCopy, IEnumerable
     {
 
         private Frequency frequency;

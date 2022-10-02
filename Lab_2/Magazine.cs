@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using System.Globalization;
 using System.Text;
+using Lab_2;
 
-namespace Lab_2
+namespace Labs.Lab_2
 {
     public sealed class Magazine : Edition, IRateAndCopy, IEnumerable
     {
@@ -27,10 +27,7 @@ namespace Lab_2
             }
         }
 
-        public bool this[Frequency index]
-        {
-            get => Frequency.Equals(index);
-        }
+        public bool this[Frequency index] => Frequency.Equals(index);
 
         public double Rating { get; }
 
@@ -55,7 +52,7 @@ namespace Lab_2
             Editors = new List<Person>();
         }
 
-        public Magazine(string title, Lab_2.Frequency frequency, DateTime date, int circulation, List<Article> articles, List<Person> editors) {
+        public Magazine(string title, global::Lab_2.Frequency frequency, DateTime date, int circulation, List<Article> articles, List<Person> editors) {
 
             Title = title;
             Frequency = frequency;
@@ -134,8 +131,8 @@ namespace Lab_2
                 return false;
             
             return Title.Equals(other.Title)
-                     && Frequency.Equals(other.Frequency)
-                     && Date.Equals(other.Date)
+                     && Frequency == other.Frequency
+                     && Date.ToBinary().Equals(other.Date.ToBinary())
                      && Circulation.Equals(other.Circulation)
                      && Articles.ToArray().SequenceEqual(other.Articles.ToArray());
         }

@@ -1,14 +1,12 @@
-﻿using System.Globalization;
-
-namespace Lab_2;
+﻿namespace Labs.Lab_2;
 
 public class Edition : IComparable<Edition>, IComparer<Edition>
 {
     protected string title;
-    
-    protected DateTime date;
-    
-    protected int circulation;
+
+    private DateTime date;
+
+    private int circulation;
     
     public DateTime Date { get; set; }
         
@@ -62,7 +60,7 @@ public class Edition : IComparable<Edition>, IComparer<Edition>
             return false;
 
         return Title.Equals(other.Title)
-               && Date.Equals(other.Date)
+               && Date.ToBinary().Equals(other.Date.ToBinary())
                && Circulation.Equals(other.Circulation);
     }
     public override int GetHashCode()

@@ -1,4 +1,6 @@
-﻿namespace Lab_2;
+﻿using Labs.Lab_2;
+
+namespace Lab_2;
 
 public class EditionComparator : IComparer<Edition>
 {

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Net.Mail;
 using System.Text;
+using Labs.Lab_2;
 
 namespace Lab_2;
 

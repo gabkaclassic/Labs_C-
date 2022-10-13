@@ -1,14 +1,27 @@
-﻿namespace Labs.Lab_2;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Labs.Annotations;
+using Labs.Lab_4;
 
-public class Edition : IComparable<Edition>, IComparer<Edition>
+namespace Labs.Lab_2;
+
+public class Edition : IComparable<Edition>, IComparer<Edition>, INotifyPropertyChanged
 {
     protected string title;
 
     private DateTime date;
 
     private int circulation;
-    
-    public DateTime Date { get; set; }
+
+    public DateTime Date
+    {
+        get => date;
+        set
+        {
+            date = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("date"));
+        }
+    }
         
     public int Circulation {
         get => circulation;
@@ -17,6 +30,7 @@ public class Edition : IComparable<Edition>, IComparer<Edition>
             if (value < 0)
                 throw new InvalidDataException("Circulation value must be positive");
             circulation = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("circulation"));
         }
 
     }
@@ -92,4 +106,18 @@ public class Edition : IComparable<Edition>, IComparer<Edition>
     {
         return !(edition1 == edition2);
     }
+
+    public void AddListener<TKey>(Listener<TKey> listener)
+    {
+        PropertyChanged += listener.Save;
+    }
+    
+    
+    public void RemoveListener<TKey>(Listener<TKey> listener)
+    {
+        PropertyChanged -= listener.Save;
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    
 }

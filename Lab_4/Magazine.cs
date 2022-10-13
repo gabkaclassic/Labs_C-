@@ -1,10 +1,11 @@
 ﻿using System.Collections;
-using System.Globalization;
 using System.Text;
+using Lab_2;
+using Labs.Lab_4;
 
-namespace Lab_1
+namespace Labs.Lab_2
 {
-    internal class Magazine : Edition, IRateAndCopy, IEnumerable
+    public sealed class Magazine : Edition, IRateAndCopy, IEnumerable
     {
 
         private Frequency frequency;
@@ -27,72 +28,85 @@ namespace Lab_1
             }
         }
 
-        public bool this[Frequency index]
-        {
-            get => Frequency.Equals(index);
-        }
+        public bool this[Frequency index] => Frequency.Equals(index);
 
         public double Rating { get; }
 
-        private ArrayList articlesList;
-        public ArrayList ArticlesList { get; set; }
+        public List<Article> Articles { get; set; }
         
-        public ArrayList Editors { get; set; }
+        public List<Person> Editors { get; set; }
 
 
         public double AverageRate { 
             get
             {
-                var sum = ArticlesList.Cast<object>().Sum(article => ((Article)article).Rating);
+                var sum = Articles.Cast<object>().Sum(article => ((Article)article).Rating);
 
-                return sum/ArticlesList.Count;
+                return sum/Articles.Count;
             } 
         }
 
         public Magazine() : base()
         {
             Frequency = Frequency.Yearly;
-            ArticlesList = new ArrayList();
-            Editors = new ArrayList();
+            Articles = new List<Article>();
+            Editors = new List<Person>();
         }
 
-        public Magazine(string title, Frequency frequency, DateTime date, int circulation, ArrayList articles, ArrayList editors) {
+        public Magazine(string title, global::Lab_2.Frequency frequency, DateTime date, int circulation, List<Article> articles, List<Person> editors) {
 
             Title = title;
             Frequency = frequency;
             Date = date;
             Circulation = circulation;
-            ArticlesList = articles;
+            Articles = articles;
             Editors = editors;
         }
 
         public void AddArticles(params Article[] articles)
         {
-            ArticlesList.InsertRange(0, articles);
+            Articles.AddRange(articles);
         }
 
         public void AddEditors(params Person[] editors)
         {
-            ArticlesList.InsertRange(0, editors);
+            Editors.AddRange(editors);
+        }
+
+        public List<Article> SortByTitle()
+        {
+            return Articles = Articles.OrderBy(article => article.Title).ToList();
+        }
+        
+        public List<Article> SortByAuthorLastname()
+        {
+            return Articles = Articles.OrderBy(article => article.Author.Lastname).ToList();
+        }
+        
+        public List<Article> SortByRating()
+        {
+            Articles.Sort((a1, a2) => new ArticleComparator().Compare(a1, a2));
+            
+            return Articles;
         }
 
         public IEnumerable<Article> RatingMoreThan(double rating)
         {
-            foreach (var article in ArticlesList)
-                if (article is Article a && a.Rating > rating)
-                    yield return a;
+            foreach (var article in Articles)
+                if (article.Rating > rating)
+                    yield return article;
         }
 
         public IEnumerable<Article> ContainsString(string str)
         {
-            foreach (var article in ArticlesList)
-                if (article is Article a && a.Title.Contains(str))
-                    yield return a;
+            foreach (var article in Articles)
+                if (article.Title.Contains(str))
+                    yield return article;
         }
         public override string ToString()
         {
             var result = new StringBuilder($"Title: {Title}, Frequency: {Frequency}, date of publication: {Date.Day}.{Date.Month}.{Date.Year}, circulation: {Circulation}, articles: \n");
-            foreach (var article in ArticlesList)
+            foreach (var article in Articles)
                 result.Append(article).Append('\n');
             result.Append("editors: \n");
             foreach (var editor in Editors)
@@ -107,7 +121,7 @@ namespace Lab_1
 
         public IEnumerator GetEnumerator()
         {
-            var authors = ArticlesList.ToArray().Cast<Article>().Select(article => article.Author);
+            var authors = Articles.ToArray().Cast<Article>().Select(article => article.Author);
             return new MagazineEnumerator(Editors, authors);
         }
         
@@ -118,10 +132,10 @@ namespace Lab_1
                 return false;
             
             return Title.Equals(other.Title)
-                     && Frequency.Equals(other.Frequency)
-                     && Date.Equals(other.Date)
+                     && Frequency == other.Frequency
+                     && Date.ToBinary().Equals(other.Date.ToBinary())
                      && Circulation.Equals(other.Circulation)
-                     && articlesList.ToArray().SequenceEqual(other.ArticlesList.ToArray());
+                     && Articles.ToArray().SequenceEqual(other.Articles.ToArray());
         }
 
         public override int GetHashCode()
@@ -136,10 +150,10 @@ namespace Lab_1
                 Title = string.Copy(title),
                 Date = Date,
                 Circulation = Circulation,
-                ArticlesList = new ArrayList(),
-                Editors = new ArrayList()
+                Articles = new List<Article>(),
+                Editors = new List<Person>()
             };
-            instance.ArticlesList.InsertRange(0, ArticlesList);
+            instance.Articles.InsertRange(0, Articles);
             instance.Editors.InsertRange(0, Editors);
 
             return instance;

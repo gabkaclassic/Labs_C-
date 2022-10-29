@@ -1,9 +1,9 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 
-namespace Lab_2
+namespace Labs.Lab_4.entity
 {
 
+    [Serializable]
     public sealed class Person
     {
         private string firstname;
@@ -11,7 +11,7 @@ namespace Lab_2
         {
             set
             {
-                if (string.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                     firstname = value;
             }
             get => firstname;
@@ -22,7 +22,7 @@ namespace Lab_2
         {
             set
             {
-                if (string.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                     lastname = value;
             }
             get => lastname;

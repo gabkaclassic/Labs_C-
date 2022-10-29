@@ -1,4 +1,4 @@
-﻿namespace Labs.Lab_4;
+﻿namespace Labs.Lab_4.@event;
 
 public class MagazinesChangedEventArgs<TKey> : EventArgs
 {

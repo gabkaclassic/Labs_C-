@@ -1,42 +1,41 @@
 ﻿using System.ComponentModel;
 using System.Text;
-using Lab_2;
-using Labs.Lab_2;
+using Labs.Lab_4.entity;
 
-namespace Labs.Lab_4;
+namespace Labs.Lab_4.@event;
 
 public class Listener<TKey>
 {
 
-    private List<ListEntry> listEntry;
+    private readonly List<ListEntry> _listEntry;
     public Listener()
     {
-        listEntry = new List<ListEntry>();
+        _listEntry = new List<ListEntry>();
     }
 
     public void Save(object source, MagazinesChangedEventArgs<TKey> args)
     {
         var entry = new ListEntry(args.TitleCollection, args.Type, args.TitleProperty);
-        listEntry.Add(entry);
+        _listEntry.Add(entry);
     }
 
     public void Save(object? sender, PropertyChangedEventArgs e)
     {
         var edition = sender as Edition;
         var entry = new ListEntry(edition.Title, Update.Property, e.PropertyName);
-        listEntry.Add(entry);
+        _listEntry.Add(entry);
     }
     public override string ToString()
     {
         var result = new StringBuilder($"Listener<{typeof(TKey)}>:\n");
 
-        foreach (var entry in listEntry)
+        foreach (var entry in _listEntry)
             result.Append(entry).Append('\n');
 
         return result.ToString();
     }
 
-    class ListEntry
+    private class ListEntry
     {
         private string TitleCollection { get; set; }
 

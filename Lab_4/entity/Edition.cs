@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Labs.Annotations;
-using Labs.Lab_4;
+using Labs.Lab_4.@event;
 
-namespace Labs.Lab_2;
+namespace Labs.Lab_4.entity;
 
+[Serializable]
 public class Edition : IComparable<Edition>, IComparer<Edition>, INotifyPropertyChanged
 {
     protected string title;
@@ -12,6 +11,8 @@ public class Edition : IComparable<Edition>, IComparer<Edition>, INotifyProperty
     private DateTime date;
 
     private int circulation;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public DateTime Date
     {
@@ -22,7 +23,7 @@ public class Edition : IComparable<Edition>, IComparer<Edition>, INotifyProperty
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("date"));
         }
     }
-        
+
     public int Circulation {
         get => circulation;
         set
@@ -34,7 +35,7 @@ public class Edition : IComparable<Edition>, IComparer<Edition>, INotifyProperty
         }
 
     }
-    
+
     public string Title {
         get => title;
         set
@@ -77,6 +78,7 @@ public class Edition : IComparable<Edition>, IComparer<Edition>, INotifyProperty
                && Date.ToBinary().Equals(other.Date.ToBinary())
                && Circulation.Equals(other.Circulation);
     }
+
     public override int GetHashCode()
     {
         return HashCode.Combine(Title, Date, Circulation);
@@ -96,12 +98,12 @@ public class Edition : IComparable<Edition>, IComparer<Edition>, INotifyProperty
     {
         return $"Edition: [title: {Title}, circulation: {Circulation}, date of publication: {Date.Day}.{Date.Month}.{Date.Year}]";
     }
-    
+
     public static bool operator==(Edition edition1, Edition edition2)
     {
         return edition1.Equals(edition2);
     }
-    
+
     public static bool operator !=(Edition edition1, Edition edition2)
     {
         return !(edition1 == edition2);
@@ -111,13 +113,10 @@ public class Edition : IComparable<Edition>, IComparer<Edition>, INotifyProperty
     {
         PropertyChanged += listener.Save;
     }
-    
-    
+
+
     public void RemoveListener<TKey>(Listener<TKey> listener)
     {
         PropertyChanged -= listener.Save;
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-    
 }

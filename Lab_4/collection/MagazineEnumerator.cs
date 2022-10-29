@@ -1,6 +1,7 @@
 ﻿using System.Collections;
+using Labs.Lab_4.entity;
 
-namespace Lab_2;
+namespace Labs.Lab_4.collection;
 
 public class MagazineEnumerator : IEnumerator
 {

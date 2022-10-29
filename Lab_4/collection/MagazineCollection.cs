@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Text;
-using Labs.Lab_2;
-using Labs.Lab_4;
+﻿using System.Text;
+using Labs.Lab_4.entity;
+using Labs.Lab_4.@event;
 
-namespace Lab_2;
+namespace Labs.Lab_4.collection;
 
 
 public delegate TKey KeySelector<out TKey>(Magazine magazine); 

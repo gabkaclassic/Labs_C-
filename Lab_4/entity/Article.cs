@@ -1,6 +1,9 @@
 ﻿
-namespace Lab_2
+using Lab_2;
+
+namespace Labs.Lab_4.entity
 {
+    [Serializable]
     public sealed class Article : IRateAndCopy, IComparer<Article>, IComparable<Article>
     {
         public Person Author { get; set; }

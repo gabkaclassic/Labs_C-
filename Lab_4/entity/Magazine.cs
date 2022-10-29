@@ -1,11 +1,14 @@
 ﻿using System.Collections;
+using System.Globalization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Lab_2;
-using Labs.Lab_4;
+using Labs.Lab_4.collection;
 
-namespace Labs.Lab_2
+namespace Labs.Lab_4.entity
 {
-    public sealed class Magazine : Edition, IRateAndCopy, IEnumerable
+    [Serializable]
+    public sealed class Magazine : Edition, IRateAndCopy, IEnumerable, Serializable<Magazine>
     {
 
         private Frequency frequency;
@@ -53,7 +56,7 @@ namespace Labs.Lab_2
             Editors = new List<Person>();
         }
 
-        public Magazine(string title, global::Lab_2.Frequency frequency, DateTime date, int circulation, List<Article> articles, List<Person> editors) {
+        public Magazine(string title, Frequency frequency, DateTime date, int circulation, List<Article> articles, List<Person> editors) {
 
             Title = title;
             Frequency = frequency;
@@ -143,7 +146,7 @@ namespace Labs.Lab_2
             return HashCode.Combine(Title, Date, Frequency, Circulation, AverageRate);
         }
 
-        public override object DeepCopy()
+        private Magazine Copy()
         {
             var instance = new Magazine
             {
@@ -155,8 +158,126 @@ namespace Labs.Lab_2
             };
             instance.Articles.InsertRange(0, Articles);
             instance.Editors.InsertRange(0, Editors);
-
+        
             return instance;
+        }
+
+        public bool Save(string filename)
+        {
+            
+            if(!File.Exists(filename))
+                Console.WriteLine("Creating new file...");
+            
+            var fileStream = new FileStream(filename, FileMode.Append, FileAccess.Write);
+
+            var stream = new MemoryStream();
+            
+            try
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(stream, this);
+                fileStream.Write(stream.GetBuffer());
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                stream.Close();
+                fileStream.Close();
+            }
+
+            return true;
+        }
+
+        public bool Load(string filename)
+        {
+
+            if (!File.Exists(filename))
+            {
+                Console.WriteLine("File doesn't exists");
+                
+                return false;
+            }
+
+            var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+            
+            try
+            {
+
+                var formatter = new BinaryFormatter();
+                var instance = (Magazine)formatter.Deserialize(fileStream);
+                Define(instance);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Error of load");
+                return false;
+            }
+            finally
+            {
+                fileStream.Close();
+            }
+
+            return true;
+        }
+
+        public bool AddFromConsole()
+        {
+            Console.WriteLine("Please, enter data for creating new object (Article, data format: <Title>;<Rating>;<Author firstname>;<Author lastname>; <Author birthday date in format dd.MM.yyyy>): ");
+            var data = Console.ReadLine().Split(";");
+            var article = new Article();
+
+            try
+            {
+                article.Title = data[0];
+                article.Rating = double.Parse(data[1]);
+                article.Author.Firstname = data[2];
+                article.Author.Lastname = data[3];
+                article.Author.Birthday = DateTime.ParseExact(data[4], "dd.MM.yyyy", null);
+                
+                Articles.Add(article);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Invalid input data");
+                
+                return false;
+            }
+
+            return true;
+        }
+
+        public Magazine DeepCopy()
+        {
+            var stream = new MemoryStream();
+            var formatter = new BinaryFormatter();
+            formatter.Serialize(stream, this);
+            stream.Seek(0, SeekOrigin.Begin);
+            
+            return (Magazine)formatter.Deserialize(stream);
+        }
+
+        public static bool Save(string filename, Magazine obj)
+        {
+            return obj.Save(filename);
+        }
+
+        public static bool Load(string filename, Magazine obj)
+        {
+            return obj.Load(filename);
+        }
+
+        private void Define(Magazine other)
+        {
+            Frequency = other.Frequency;
+            Articles = new List<Article>(other.Articles);
+            Editors = new List<Person>(other.Editors);
+            Edition = other.Edition;
+            Circulation = other.Circulation;
+            Date = other.Date;
+            Title = other.Title;
         }
     }
 }
